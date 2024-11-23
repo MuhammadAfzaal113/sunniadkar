@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework_simplejwt',
     "apps.user.apps.UserConfig",
-    "apps.salawat.apps.SalawatConfig"
+    "apps.modules.apps.ModulesConfig"
 ]
 
 MIDDLEWARE = [

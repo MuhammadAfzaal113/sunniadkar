@@ -9,6 +9,7 @@ class Salawat(models.Model):
     salawat_text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.salawat_title
@@ -71,3 +72,52 @@ class SalawatAudio(models.Model):
     def delete(self, *args, **kwargs):
         super(SalawatAudio, self).delete(*args, **kwargs)
 
+#  Dua models
+
+
+class DuaCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    category_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.category_name
+
+    class Meta:
+        verbose_name = 'Dua Category'
+        verbose_name_plural = 'Dua Categories'
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = uuid.uuid4()
+        super(DuaCategory, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        super(DuaCategory, self).delete(*args, **kwargs)
+
+
+class Dua(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    dua_title = models.CharField(max_length=255)
+    dua_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(DuaCategory, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.dua_title
+
+    class Meta:
+        verbose_name = 'Dua'
+        verbose_name_plural = 'Duas'
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.id = uuid.uuid4()
+        super(Dua, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        super(Dua, self).delete(*args, **kwargs)

@@ -11,6 +11,27 @@ from apps.user.models import User
 from apps.utils.jwt_config import get_jwt_token
 
 
+def user_details(user, token=True):
+    full_name = HumanName(str(user.full_name))
+    if token:
+        tokens = get_jwt_token(user)
+        return {
+            'accessToken': tokens['accessToken'],
+            'refreshToken': tokens['refreshToken'],
+            'user_id': str(user.id),
+            'email': user.email,
+            'first_name': full_name.first if full_name else "",
+            'last_name': full_name.last if full_name else "",
+            'address': user.address
+        }
+    return {
+        'user_id': str(user.id),
+        'email': user.email,
+        'first_name': full_name.first if full_name else "",
+        'last_name': full_name.last if full_name else "",
+        'address': user.address
+    }
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def signup_view(request):
@@ -20,15 +41,19 @@ def signup_view(request):
                 return Response({'success': True, 'message': 'Email is not valid'},
                                 status=status.HTTP_400_BAD_REQUEST)
 
-            User.objects.create_user(
+            user = User.objects.create_user(
                 email=request.data['email'],
                 password=request.data['password'],
                 full_name=request.data['full_name'],
                 address=request.data.get('address'),
                 lat_long=request.data.get('lat_long')
             )
-            return Response({'success': True, 'message': 'User created successfully.'},
-                            status=status.HTTP_201_CREATED)
+
+            response = user_details(user)
+            response['success'] = True
+            response['message'] = 'User created successfully.'
+
+            return Response(response, status=status.HTTP_201_CREATED)
         else:
             return Response({'success': False, 'message': 'Email and password are required.'},
                             status=status.HTTP_400_BAD_REQUEST)
@@ -56,21 +81,10 @@ def login_view(request):
                         'success': False,
                         'message': 'User is inactive/deleted, please contact your admin for further details.'},
                         status=status.HTTP_400_BAD_REQUEST)
+                response = user_details(user)
 
-                tokens = get_jwt_token(user)
-                full_name = HumanName(str(user.full_name))
-
-                response = {
-                    'success': True,
-                    'message': 'Login successfully',
-                    'accessToken': tokens['accessToken'],
-                    'refreshToken': tokens['refreshToken'],
-                    'user_id': str(user.id),
-                    'email': user.email,
-                    'first_name': full_name.first if full_name else "",
-                    'last_name': full_name.last if full_name else "",
-                    'address': user.address
-                }
+                response['success'] = True
+                response['message'] = 'User logged in successfully.'
 
                 return Response(response, status=status.HTTP_200_OK)
             else:
@@ -88,17 +102,10 @@ def login_view(request):
 def profile(request):
     try:
         user = User.objects.get(id=request.user.id)
-        full_name = HumanName(str(user.full_name))
+        response = user_details(user, token=False)
+        response['success'] = True
+        response['message'] = 'User profile fetched successfully.'
 
-        response = {
-            'success': True,
-            'message': 'User profile fetched successfully',
-            'user_id': str(user.id),
-            'email': user.email,
-            'first_name': full_name.first if full_name else "",
-            'last_name': full_name.last if full_name else "",
-            'address': user.address
-        }
         return Response(response, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)

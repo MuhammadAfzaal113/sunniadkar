@@ -56,4 +56,17 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.full_name
+        return self.id
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+    def save(self, *args, **kwargs):
+        if self.full_name:
+            self.first_name = self.full_name.split()[0]
+            self.last_name = ' '.join(self.full_name.split()[1:])
+        super(User, self).save(*args, **kwargs)
+
+    def get_first_name(self):
+        return self.full_name.split()[0]
