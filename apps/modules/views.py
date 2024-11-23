@@ -6,6 +6,8 @@ from rest_framework.response import Response
 
 from apps.user.models import User
 from apps.modules.models import Salawat, DuaCategory, Dua
+from itertools import groupby
+from operator import itemgetter
 
 
 @api_view(['POST'])
@@ -192,11 +194,26 @@ def update_dua_category_view(request, id):
 @permission_classes([IsAuthenticated])
 def get_dua_view_by_category_view(request):
     try:
-        dua = Dua.objects.filter(category=request.query_params.get('dua_category_id')).all().values()
+        dua_objects = Dua.objects.filter(category=request.query_params.get('dua_category_id')).values()
+
+        # Group by category_id
+        dua_objects = sorted(dua_objects, key=itemgetter('category_id'))  # Sort before grouping
+        grouped = groupby(dua_objects, key=itemgetter('category_id'))
+
+        result = []
+        for category_id, duas in grouped:
+            # Get the category name (assume it's fetched from another query or cached)
+            category_name = DuaCategory.objects.get(id=category_id).category_name
+            result.append({
+                "category_name": category_name,
+                "category_id": category_id,
+                "dua": list(duas)
+            })
+
         response_data = {
             'success': True,
             'message': 'Dua fetched successfully.',
-            'dua': dua
+            'dua': result
         }
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
