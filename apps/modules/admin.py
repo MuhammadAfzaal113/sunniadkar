@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from apps.modules.models import Salawat, DuaCategory, Dua
+from apps.modules.models import Salawat, DuaCategory, Dua, Books
 
 
 @admin.register(Salawat)
@@ -30,3 +30,12 @@ class DuaAdmin(admin.ModelAdmin):
     search_fields = ('dua_title', 'dua_text', 'category')
     readonly_fields = ('created_at', 'updated_at')
     list_filter = ('category', 'dua_title', 'created_at')
+
+
+@admin.register(Books)
+class BooksAdmin(admin.ModelAdmin):
+    list_display = ('book_title', 'book_text', 'created_at', 'book_link')
+    fields = ('book_title', 'book_text', 'book_link')
+    search_fields = ('book_title', 'book_text')
+    readonly_fields = ('created_at', 'updated_at')
+    list_filter = ('book_title', 'created_at')

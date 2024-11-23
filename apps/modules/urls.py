@@ -9,4 +9,6 @@ urlpatterns = [
     path('dua_category/<int:id>', get_dua_category_by_id_view, name='get_dua_category_by_id_view'),
     path('dua_category/delete/<int:id>', delete_dua_category_view, name='delete_dua_category_view'),
     path('dua_list', get_dua_view_by_category_view, name='get_dua_view_by_category_view'),
+    path('get_books', get_book_view, name='get_book_view'),
+
 ]

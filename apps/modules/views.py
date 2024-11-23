@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from apps.user.models import User
-from apps.modules.models import Salawat, DuaCategory, Dua
+from apps.modules.models import Salawat, DuaCategory, Dua, Books
 from itertools import groupby
 from operator import itemgetter
 
@@ -229,6 +229,21 @@ def get_dua_by_id_view(request, id):
             'success': True,
             'message': 'Dua fetched successfully.',
             'dua': dua
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_book_view(request):
+    try:
+        book = Books.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Book fetched successfully.',
+            'book': book
         }
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:

@@ -121,3 +121,20 @@ class Dua(models.Model):
 
     def delete(self, *args, **kwargs):
         super(Dua, self).delete(*args, **kwargs)
+
+
+class Books(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    book_title = models.CharField(max_length=255)
+    book_text = models.TextField()
+    book_link = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.book_title
+
+    class Meta:
+        verbose_name = 'Book'
+        verbose_name_plural = 'Books'
