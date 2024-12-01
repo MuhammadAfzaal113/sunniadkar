@@ -37,7 +37,7 @@ def create_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_salawat_view(request):
     try:
         salawat = Salawat.objects.all().values()
@@ -110,7 +110,7 @@ def get_random_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_category_view(request):
     try:
         dua_category = DuaCategory.objects.all().values()
@@ -125,7 +125,7 @@ def get_dua_category_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_category_by_id_view(request, id):
     try:
         dua_category = DuaCategory.objects.get(id=id)
@@ -191,7 +191,7 @@ def update_dua_category_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_view_by_category_view(request):
     try:
         dua_objects = Dua.objects.filter(category=request.query_params.get('dua_category_id')).values()
@@ -221,7 +221,7 @@ def get_dua_view_by_category_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_by_id_view(request, id):
     try:
         dua = Dua.objects.get(id=id)
@@ -236,7 +236,7 @@ def get_dua_by_id_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_book_view(request):
     try:
         book = Books.objects.all().values()
