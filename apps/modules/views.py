@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from apps.user.models import User
-from apps.modules.models import Salawat, DuaCategory, Dua, Books
+from apps.modules.models import *
 from itertools import groupby
 from operator import itemgetter
 
@@ -248,3 +248,115 @@ def get_book_view(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_mewlid(request):
+    try:
+        mewlid = Mewlid.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Mewlid fetched successfully.',
+            'mewlid': mewlid
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Mewlid because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_qasida(request):
+    try:
+        qasida = Qasida.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Qasida fetched successfully.',
+            'qasida': qasida
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Qasida because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_lecture(request):
+    try:
+        lecture = Lecture.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Lecture fetched successfully.',
+            'lecture': lecture
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Lecture because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_article(request):
+    try:
+        article = Article.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Article fetched successfully.',
+            'article': article
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Article because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_qa(request):
+    try:
+        qa = QA.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'QA fetched successfully.',
+            'qa': qa
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch QA because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_download(request):
+    try:
+        download = Download.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Download fetched successfully.',
+            'download': download
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Download because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_marriage_guide(request):
+    try:
+        marriage_guide = MarriageGuide.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Marriage Guide fetched successfully.',
+            'marriage_guide': marriage_guide
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Marriage Guide because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_pledge_salawat(request):
+    try:
+        pledge_salawat = PledgeSalawat.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Pledge Salawat fetched successfully.',
+            'pledge_salawat': pledge_salawat
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Pledge Salawat because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
