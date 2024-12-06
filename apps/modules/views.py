@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from apps.user.models import User
-from apps.modules.models import Salawat, DuaCategory, Dua, Books
+from apps.modules.models import Salawat, DuaCategory, Dua, Books, Mawlid
 from itertools import groupby
 from operator import itemgetter
 
@@ -244,6 +244,21 @@ def get_book_view(request):
             'success': True,
             'message': 'Book fetched successfully.',
             'book': book
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_mawlid_view(request):
+    try:
+        mawlid = Mawlid.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Mawlid fetched successfully.',
+            'mawlid': mawlid
         }
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:

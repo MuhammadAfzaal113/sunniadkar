@@ -138,3 +138,19 @@ class Books(models.Model):
     class Meta:
         verbose_name = 'Book'
         verbose_name_plural = 'Books'
+
+
+class Mawlid(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    mawlid_title = models.CharField(max_length=255)
+    mawlid_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.mawlid_title
+
+    class Meta:
+        verbose_name = 'Mawlid'
+        verbose_name_plural = 'Mawlid'

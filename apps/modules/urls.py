@@ -10,5 +10,5 @@ urlpatterns = [
     path('dua_category/delete/<int:id>', delete_dua_category_view, name='delete_dua_category_view'),
     path('dua_list', get_dua_view_by_category_view, name='get_dua_view_by_category_view'),
     path('get_books', get_book_view, name='get_book_view'),
-
+    path('get_mawlid', get_mawlid_view, name='get_mawlid_view'),
 ]
