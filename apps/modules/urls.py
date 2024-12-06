@@ -19,6 +19,7 @@ urlpatterns = [
     path('get-download', get_download, name='get_download'),
     path('get-marriage-guide', get_marriage_guide, name='get_marriage_guide'),
     path('get-pledge-salawat', get_pledge_salawat, name='get_pledge_salawat'),
+    path('create-community', create_community, name='create_community'),
     
 
 ]

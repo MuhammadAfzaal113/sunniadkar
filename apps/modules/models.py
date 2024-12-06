@@ -195,3 +195,12 @@ class PledgeSalawat(CommonFields):
     class Meta:
         verbose_name = 'Pledge Salawat'
         verbose_name_plural = 'Pledge Salawats'
+        
+class Community(CommonFields):
+    name = models.CharField(max_length=255)
+    address = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    
+    like = models.IntegerField(default=0)
+    dua = models.IntegerField(default=0)
+    ameen = models.IntegerField(default=0)
