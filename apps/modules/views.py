@@ -396,7 +396,7 @@ def create_community(request):
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['POST'])
+@api_view(['PUT'])
 @permission_classes([AllowAny])
 def like_post(request):
     try:
@@ -415,7 +415,7 @@ def like_post(request):
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 @permission_classes([AllowAny])
 def dua_post(request):
     try:
@@ -434,7 +434,7 @@ def dua_post(request):
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
     
-@api_view(['POST'])
+@api_view(['PUT'])
 @permission_classes([AllowAny])
 def ameen_post(request):
     try:

@@ -21,5 +21,8 @@ urlpatterns = [
     path('get-pledge-salawat', get_pledge_salawat, name='get_pledge_salawat'),
     path('create-community', create_community, name='create_community'),
     
+    path('like-post', like_post, name='like_post'),
+    path('dua-post', dua_post, name='dua_post'),
+    path('ameen-post', ameen_post, name='ameen_post'),
 
 ]
