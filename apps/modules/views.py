@@ -375,6 +375,20 @@ def get_community(request):
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Community because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_LifeLesson(request):
+    try:
+        life_lesson = LifeLesson.objects.all().values()
+        response_data = {
+            'success': True,
+            'message': 'Life Lesson fetched successfully.',
+            'life_lesson': life_lesson
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Life Lesson because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_community(request):

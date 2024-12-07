@@ -88,3 +88,10 @@ class MarriageGuideAdmin(admin.ModelAdmin):
     fields = ('title', 'description', 'link')
     search_fields = ['title']
     list_filter = ('title', 'created_at')
+    
+@admin.register(LifeLesson)
+class LifeLessonAdmin(admin.ModelAdmin):
+    list_display = ('author', 'description', 'created_at')
+    fields = ('author', 'description')
+    search_fields = ['author']
+    list_filter = ('author', 'created_at')

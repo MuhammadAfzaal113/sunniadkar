@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from apps.utils.abstract_models import CommonFields
 from apps.modules.choices import *
+from apps.user.models import User
 
 
 class Salawat(CommonFields):
@@ -181,6 +182,14 @@ class MarriageGuide(CommonFields):
     class Meta:
         verbose_name = 'Marriage Guide'
         verbose_name_plural = 'Marriage Guides'
+        
+class  LifeLesson(CommonFields):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField()
+    
+    class Meta:
+        verbose_name = 'Life Lesson'
+        verbose_name_plural = 'Life Lessons'
         
 
 class PledgeSalawat(CommonFields):
