@@ -376,13 +376,13 @@ def get_community(request):
         return Response({'success': False, 'message': f"Failed to fetch Community because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def create_community(request):
     try:
         name = request.user.name if request.user else 'Guest'
         data = request.data
         
-        if not data.get('description'):
+        if not data.get('description', None):
             return Response({'success': False, 'message': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
         
         Community.objects.create(
