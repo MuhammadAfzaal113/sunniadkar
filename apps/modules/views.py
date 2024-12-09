@@ -37,7 +37,7 @@ def create_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_salawat_view(request):
     try:
         salawat = Salawat.objects.all().values()
@@ -110,7 +110,7 @@ def get_random_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_category_view(request):
     try:
         dua_category = DuaCategory.objects.all().values()
@@ -125,7 +125,7 @@ def get_dua_category_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_category_by_id_view(request, id):
     try:
         dua_category = DuaCategory.objects.get(id=id)
@@ -191,7 +191,7 @@ def update_dua_category_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_view_by_category_view(request):
     try:
         dua_objects = Dua.objects.filter(category=request.query_params.get('dua_category_id')).values()
@@ -221,7 +221,7 @@ def get_dua_view_by_category_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_by_id_view(request, id):
     try:
         dua = Dua.objects.get(id=id)
@@ -236,7 +236,7 @@ def get_dua_by_id_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_book_view(request):
     try:
         book = Books.objects.all().values()
@@ -262,7 +262,7 @@ def get_mewlid(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Mewlid because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_qasida(request):
@@ -276,7 +276,7 @@ def get_qasida(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Qasida because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_lecture(request):
@@ -290,7 +290,7 @@ def get_lecture(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Lecture because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_article(request):
@@ -318,7 +318,7 @@ def get_qa(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch QA because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_download(request):
@@ -332,7 +332,7 @@ def get_download(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Download because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_marriage_guide(request):
@@ -346,7 +346,7 @@ def get_marriage_guide(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Marriage Guide because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
@@ -360,7 +360,7 @@ def get_pledge_salawat(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Pledge Salawat because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_community(request):
@@ -374,7 +374,7 @@ def get_community(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Community because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_LifeLesson(request):
@@ -388,28 +388,28 @@ def get_LifeLesson(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Life Lesson because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_community(request):
     try:
         name = request.user.name if request.user else 'Guest'
         data = request.data
-        
+
         if not data.get('description', None):
             return Response({'success': False, 'message': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         Community.objects.create(
             name= name,
             address=data.get('address'),
             description=data.get('description'),
         )
-        
+
         return Response({'success': False, 'message': 'Community already exists.'}, status=status.HTTP_201_CREATED)
-    
+
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['PUT'])
 @permission_classes([AllowAny])
 def like_post(request):
@@ -417,12 +417,12 @@ def like_post(request):
         id = request.data.get('id', None)
         if not id:
             return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_200_OK)
-        
-        
+
+
         community = Community.objects.get(id=id)
         if not community:
             return Response({'success': False, 'message': 'Community not found.'}, status=status.HTTP_200_OK)
-        
+
         community.like += 1
         community.save()
         return Response({'success': True, 'message': 'Post liked successfully.'}, status=status.HTTP_200_OK)
@@ -436,18 +436,18 @@ def dua_post(request):
         id = request.data.get('id', None)
         if not id:
             return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_200_OK)
-        
+
         community = Community.objects.get(id=id)
         if not community:
             return Response({'success': False, 'message': 'Community not found.'}, status=status.HTTP_200_OK)
-        
+
         community.dua += 1
         community.save()
         return Response({'success': True, 'message': 'Post liked successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
-    
+
+
 @api_view(['PUT'])
 @permission_classes([AllowAny])
 def ameen_post(request):
@@ -455,7 +455,7 @@ def ameen_post(request):
         id = request.data.get('id', None)
         if not id:
             return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_200_OK)
-        
+
         community = Community.objects.get(id=id)
         if not community:
             return Response({'success': False, 'message': 'Community not found.'}, status=status.HTTP_200_OK)
