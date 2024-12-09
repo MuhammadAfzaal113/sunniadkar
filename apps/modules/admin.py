@@ -95,3 +95,6 @@ class LifeLessonAdmin(admin.ModelAdmin):
     fields = ('author', 'description')
     search_fields = ['author']
     list_filter = ('author', 'created_at')
+    
+    def get_author(self, obj):
+        return str(obj.author.full_name)  

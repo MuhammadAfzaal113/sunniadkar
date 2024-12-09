@@ -37,10 +37,10 @@ def create_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_salawat_view(request):
     try:
-        salawat = Salawat.objects.all().values()
+        salawat = Salawat.objects.values('id', 'title', 'description').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Salawat fetched successfully.',
@@ -52,10 +52,10 @@ def get_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_salawat_by_id_view(request, id):
     try:
-        salawat = Salawat.objects.get(id=id)
+        salawat = Salawat.objects.filter(id=id).values('id', 'title', 'description').first()
         response_data = {
             'success': True,
             'message': 'Salawat fetched successfully.',
@@ -95,7 +95,7 @@ def update_salawat_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_random_salawat_view(request):
     try:
         salawat = Salawat.objects.order_by('?').first()
@@ -110,10 +110,10 @@ def get_random_salawat_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_category_view(request):
     try:
-        dua_category = DuaCategory.objects.all().values()
+        dua_category = DuaCategory.objects.values('id', 'category_name').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Dua category fetched successfully.',
@@ -125,10 +125,10 @@ def get_dua_category_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_category_by_id_view(request, id):
     try:
-        dua_category = DuaCategory.objects.get(id=id)
+        dua_category = DuaCategory.objects.filter(id=id).values('id', 'category_name').first()
         response_data = {
             'success': True,
             'message': 'Dua category fetched successfully.',
@@ -191,7 +191,7 @@ def update_dua_category_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_view_by_category_view(request):
     try:
         dua_objects = Dua.objects.filter(category=request.query_params.get('dua_category_id')).values()
@@ -221,7 +221,7 @@ def get_dua_view_by_category_view(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_dua_by_id_view(request, id):
     try:
         dua = Dua.objects.get(id=id)
@@ -236,10 +236,10 @@ def get_dua_by_id_view(request, id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_book_view(request):
     try:
-        book = Books.objects.all().values()
+        book = Books.objects.values('id', 'title', 'description', 'link').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Book fetched successfully.',
@@ -253,7 +253,7 @@ def get_book_view(request):
 @permission_classes([AllowAny])
 def get_mewlid(request):
     try:
-        mewlid = Mewlid.objects.all().values()
+        mewlid = Mewlid.objects.values('id', 'title', 'description').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Mewlid fetched successfully.',
@@ -267,7 +267,7 @@ def get_mewlid(request):
 @permission_classes([AllowAny])
 def get_qasida(request):
     try:
-        qasida = Qasida.objects.all().values()
+        qasida = Qasida.objects.values('id', 'title', 'description').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Qasida fetched successfully.',
@@ -281,7 +281,7 @@ def get_qasida(request):
 @permission_classes([AllowAny])
 def get_lecture(request):
     try:
-        lecture = Lecture.objects.all().values()
+        lecture = Lecture.objects.values('id', 'title', 'link').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Lecture fetched successfully.',
@@ -295,7 +295,7 @@ def get_lecture(request):
 @permission_classes([AllowAny])
 def get_article(request):
     try:
-        article = Article.objects.all().values()
+        article = Article.objects.values('id', 'title', 'description', 'link').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Article fetched successfully.',
@@ -309,7 +309,7 @@ def get_article(request):
 @permission_classes([AllowAny])
 def get_qa(request):
     try:
-        qa = QA.objects.all().values()
+        qa = QA.objects.values('id', 'question', 'answer').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'QA fetched successfully.',
@@ -323,7 +323,7 @@ def get_qa(request):
 @permission_classes([AllowAny])
 def get_download(request):
     try:
-        download = Download.objects.all().values()
+        download = Download.objects.values('id', 'title', 'link').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Download fetched successfully.',
@@ -337,7 +337,7 @@ def get_download(request):
 @permission_classes([AllowAny])
 def get_marriage_guide(request):
     try:
-        marriage_guide = MarriageGuide.objects.all().values()
+        marriage_guide = MarriageGuide.objects.values('id', 'title', 'description', 'link').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Marriage Guide fetched successfully.',
@@ -351,7 +351,7 @@ def get_marriage_guide(request):
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
     try:
-        pledge_salawat = PledgeSalawat.objects.all().values()
+        pledge_salawat = PledgeSalawat.objects.values('id', 'amount', 'name', 'address', 'salat').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',
@@ -365,7 +365,7 @@ def get_pledge_salawat(request):
 @permission_classes([AllowAny])
 def get_community(request):
     try:
-        community = Community.objects.all().values()
+        community = Community.objects.values('id', 'name', 'address', 'description', 'like', 'dua', 'ameen').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Community fetched successfully.',
@@ -379,7 +379,7 @@ def get_community(request):
 @permission_classes([AllowAny])
 def get_LifeLesson(request):
     try:
-        life_lesson = LifeLesson.objects.all().values()
+        life_lesson = LifeLesson.objects.values('id', 'author__full_name', 'description').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Life Lesson fetched successfully.',
@@ -393,7 +393,7 @@ def get_LifeLesson(request):
 @permission_classes([IsAuthenticated])
 def create_community(request):
     try:
-        name = request.user.name if request.user else 'Guest'
+        name = request.user.full_name if request.user else 'Guest'
         data = request.data
         
         if not data.get('description', None):
@@ -401,11 +401,11 @@ def create_community(request):
         
         Community.objects.create(
             name= name,
-            address=data.get('address'),
-            description=data.get('description'),
+            address=data.get('address', None),
+            description=data.get('description', None),
         )
         
-        return Response({'success': False, 'message': 'Community already exists.'}, status=status.HTTP_201_CREATED)
+        return Response({'success': True, 'message': 'Community created successfully.'}, status=status.HTTP_201_CREATED)
     
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -443,7 +443,7 @@ def dua_post(request):
         
         community.dua += 1
         community.save()
-        return Response({'success': True, 'message': 'Post liked successfully.'}, status=status.HTTP_200_OK)
+        return Response({'success': True, 'message': 'Post Dua successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -461,6 +461,6 @@ def ameen_post(request):
             return Response({'success': False, 'message': 'Community not found.'}, status=status.HTTP_200_OK)
         community.ameen += 1
         community.save()
-        return Response({'success': True, 'message': 'Post liked successfully.'}, status=status.HTTP_200_OK)
+        return Response({'success': True, 'message': 'Post Ameen successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
