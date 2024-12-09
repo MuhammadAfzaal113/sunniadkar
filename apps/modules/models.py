@@ -24,7 +24,7 @@ class Salawat(CommonFields):
 
 class SalawatTranslation(CommonFields):
     salawat = models.ForeignKey(Salawat, on_delete=models.CASCADE)
-    
+
     language = models.CharField(max_length=5)
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=1000)
@@ -112,7 +112,7 @@ class Mewlid(CommonFields):
     class Meta:
         verbose_name = 'Mewlid'
         verbose_name_plural = 'Mewlids'
-        
+
 
 class Qasida(CommonFields):
     title = models.CharField(max_length=255)
@@ -124,7 +124,7 @@ class Qasida(CommonFields):
     class Meta:
         verbose_name = 'Qasida'
         verbose_name_plural = 'Qasidas'
-        
+
 class Lecture(CommonFields):
     title = models.CharField(max_length=255)
     link = models.URLField()
@@ -135,7 +135,7 @@ class Lecture(CommonFields):
     class Meta:
         verbose_name = 'Lecture'
         verbose_name_plural = 'Lectures'
-        
+
 class Article(CommonFields):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -170,7 +170,7 @@ class Download(CommonFields):
     class Meta:
         verbose_name = 'Download'
         verbose_name_plural = 'Downloads'
-        
+
 class MarriageGuide(CommonFields):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -194,26 +194,26 @@ class  LifeLesson(CommonFields):
     class Meta:
         verbose_name = 'Life Lesson'
         verbose_name_plural = 'Life Lessons'
-        
+
 
 class PledgeSalawat(CommonFields):
     amount = models.IntegerField()
     name = models.CharField(max_length=255, default='Guest')
     address = models.TextField()
     salat = models.CharField(max_length=255, choices=SalatChoices.choices)
-    
+
     def __str__(self):
         return self.salat
-    
+
     class Meta:
         verbose_name = 'Pledge Salawat'
         verbose_name_plural = 'Pledge Salawats'
-        
+
 class Community(CommonFields):
     name = models.CharField(max_length=255)
     address = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    
+
     like = models.IntegerField(default=0)
     dua = models.IntegerField(default=0)
     ameen = models.IntegerField(default=0)
