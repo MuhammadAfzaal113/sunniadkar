@@ -44,9 +44,9 @@ def signup_view(request):
             user = User.objects.create_user(
                 email=request.data['email'],
                 password=request.data['password'],
-                full_name=request.data['full_name'],
-                address=request.data.get('address'),
-                lat_long=request.data.get('lat_long')
+                full_name=request.data.get('full_name', None),
+                address=request.data.get('address', None),
+                lat_long=request.data.get('lat_long', None)
             )
 
             response = user_details(user)

@@ -182,11 +182,15 @@ class MarriageGuide(CommonFields):
     class Meta:
         verbose_name = 'Marriage Guide'
         verbose_name_plural = 'Marriage Guides'
-
+        
+        
 class  LifeLesson(CommonFields):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-
+    
+    def __str__(self):
+        return self.author.full_name
+    
     class Meta:
         verbose_name = 'Life Lesson'
         verbose_name_plural = 'Life Lessons'
@@ -213,3 +217,6 @@ class Community(CommonFields):
     like = models.IntegerField(default=0)
     dua = models.IntegerField(default=0)
     ameen = models.IntegerField(default=0)
+    
+    def __str__(self):
+        return self.name
