@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "apps.user.apps.UserConfig",
-    "apps.salawat.apps.SalawatConfig"
+    "apps.modules.apps.ModulesConfig"
 ]
 
 MIDDLEWARE = [
@@ -142,6 +142,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+
+AUTH_USER_MODEL = 'user.User'
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
