@@ -3,3 +3,9 @@
 */__pycache__/*
 */static/*
 .env
+/apps/utils/__pycache__/*
+/apps/user/migrations/__pycache__/*
+/apps/user/__pycache__/*
+/apps/modules/migrations/__pycache__/*
+/apps/modules/__pycache__/*
+
