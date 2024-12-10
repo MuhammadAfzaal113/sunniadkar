@@ -200,7 +200,7 @@ class PledgeSalawat(CommonFields):
     amount = models.IntegerField()
     name = models.CharField(max_length=255, default='Guest')
     address = models.TextField()
-    salat = models.CharField(max_length=255, choices=SalatChoices.choices)
+    salat = models.CharField(max_length=255, choices=SalatChoices.choices, null=True, blank=True)
 
     def __str__(self):
         return self.salat

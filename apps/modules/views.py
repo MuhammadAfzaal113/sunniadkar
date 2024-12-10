@@ -355,12 +355,36 @@ def get_pledge_salawat(request):
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',
-            'pledge_salawat': pledge_salawat
+            'total_pledge_salawat': pledge_salawat.count(),
+            'pledge_salawat': pledge_salawat,
         }
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Pledge Salawat because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_pledge_salawat(request):
+    try:
+        data = request.data
+
+        if not data.get('amount', None):
+            return Response({'success': False, 'message': 'Amount is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not data.get('name', None):
+            return Response({'success': False, 'message': 'Name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        PledgeSalawat.objects.create(
+            amount=data.get('amount', None),
+            name=data.get('name', None),
+            address=data.get('address', None),
+            salat=data.get('salat', None),
+        )
+        return Response({'success': True, 'message': 'Pledge Salawat created successfully.'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_community(request):
