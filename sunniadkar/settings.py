@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-ah=c5v$hpoj#(@9!_kvlxir$lm3&8*9o!7d=ol0ka*v@g@)8a=
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+CSRF_TRUSTED_ORIGINS = ['https://api.qissaofislam.com/', "https://api.qissaofislam.com", "http://api.qissaofislam.com"]
 
 # Application definition
 
