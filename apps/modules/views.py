@@ -384,6 +384,19 @@ def create_pledge_salawat(request):
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_community_category(request):
+    try:
+        community_category = CommunityCategory.objects.values('id', 'category_name').order_by('-created_at')
+        response_data = {
+            'success': True,
+            'message': 'Community Category fetched successfully.',
+            'community_category': community_category
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Community Category because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 @permission_classes([AllowAny])
