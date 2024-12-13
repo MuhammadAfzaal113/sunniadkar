@@ -200,7 +200,7 @@ class PledgeSalawat(CommonFields):
     amount = models.IntegerField()
     name = models.CharField(max_length=255, default='Guest')
     address = models.TextField()
-    salat = models.CharField(max_length=255, choices=SalatChoices.choices)
+    salat = models.CharField(max_length=255, choices=SalatChoices.choices, null=True, blank=True)
 
     def __str__(self):
         return self.salat
@@ -208,11 +208,25 @@ class PledgeSalawat(CommonFields):
     class Meta:
         verbose_name = 'Pledge Salawat'
         verbose_name_plural = 'Pledge Salawats'
+        
+class CommunityCategory(CommonFields):
+    category_name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.category_name
+
+    class Meta:
+        verbose_name = 'Community Category'
+        verbose_name_plural = 'Community Categories'
+
+    def delete(self, *args, **kwargs):
+        super(CommunityCategory, self).delete(*args, **kwargs)
 
 class Community(CommonFields):
     name = models.CharField(max_length=255)
     address = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(CommunityCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     like = models.IntegerField(default=0)
     dua = models.IntegerField(default=0)
