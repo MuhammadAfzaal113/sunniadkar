@@ -361,6 +361,39 @@ def get_pledge_salawat(request):
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Pledge Salawat because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_pledge_salawat(request):
+    try:
+        data = request.data
+
+        if not data.get('amount', None):
+            return Response({'success': False, 'message': 'Amount is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        PledgeSalawat.objects.create(
+            amount=data.get('amount', None),
+            name=data.get('name', None),
+            address=data.get('address', None),
+            salat=data.get('salat', None),
+        )
+        return Response({'success': True, 'message': 'Pledge Salawat created successfully.'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_community_category(request):
+    try:
+        community_category = CommunityCategory.objects.values('id', 'category_name').order_by('-created_at')
+        response_data = {
+            'success': True,
+            'message': 'Community Category fetched successfully.',
+            'category_list': community_category
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Community Category because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_community(request):
@@ -390,7 +423,7 @@ def get_LifeLesson(request):
         return Response({'success': False, 'message': f"Failed to fetch Life Lesson because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def create_community(request):
     try:
         name = request.user.full_name if request.user else 'Guest'
@@ -399,8 +432,10 @@ def create_community(request):
         if not data.get('description', None):
             return Response({'success': False, 'message': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        
         Community.objects.create(
             name= name,
+            category_id = data.get('category_id', None),
             address=data.get('address', None),
             description=data.get('description', None),
         )

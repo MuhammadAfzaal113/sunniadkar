@@ -103,3 +103,10 @@ class LifeLessonAdmin(admin.ModelAdmin):
     
     def get_author(self, obj):
         return str(obj.author.full_name)  
+    
+@admin.register(CommunityCategory)
+class CommunityCategoryAdmin(admin.ModelAdmin):
+    list_display = ('category_name', 'created_at')
+    fields = ('category_name',)
+    search_fields = ['category_name']
+    list_filter = ('category_name', 'created_at')
