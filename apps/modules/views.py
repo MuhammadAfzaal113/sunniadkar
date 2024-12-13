@@ -414,7 +414,7 @@ def get_LifeLesson(request):
         return Response({'success': False, 'message': f"Failed to fetch Life Lesson because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def create_community(request):
     try:
         name = request.user.full_name if request.user else 'Guest'
@@ -423,8 +423,10 @@ def create_community(request):
         if not data.get('description', None):
             return Response({'success': False, 'message': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        
         Community.objects.create(
             name= name,
+            category_id = data.get('category_id', None),
             address=data.get('address', None),
             description=data.get('description', None),
         )

@@ -2,6 +2,11 @@ from django.contrib import admin
 from apps.modules.models import *
 
 
+admin.site.site_header = "SunniAdkar Admin Panel"
+admin.site.site_title = "SunniAdkar Admin"
+admin.site.index_title = "Welcome to SunniAdkar Admin Panel"
+
+
 @admin.register(Salawat)
 class SalawatAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'created_at',)
@@ -98,3 +103,10 @@ class LifeLessonAdmin(admin.ModelAdmin):
     
     def get_author(self, obj):
         return str(obj.author.full_name)  
+    
+@admin.register(CommunityCategory)
+class CommunityCategoryAdmin(admin.ModelAdmin):
+    list_display = ('category_name', 'created_at')
+    fields = ('category_name',)
+    search_fields = ['category_name']
+    list_filter = ('category_name', 'created_at')
