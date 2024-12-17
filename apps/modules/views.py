@@ -351,11 +351,11 @@ def get_marriage_guide(request):
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
     try:
-        pledge_salawat = PledgeSalawat.objects.values('id', 'amount', 'name', 'address', 'salat').order_by('-created_at')
+        pledge_salawat = PledgeSalawat.objects.values('id', 'amount', 'campaign', 'name', 'address', 'salat').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',
-            'total_pledge_salawat': pledge_salawat.count(),
+            'total_pledge_salawat': pledge_salawat.count() if pledge_salawat else 0,
             'pledge_salawat': pledge_salawat,
         }
         return Response(response_data, status=status.HTTP_200_OK)
@@ -373,8 +373,12 @@ def create_pledge_salawat(request):
         
         if not data.get('name', None):
             return Response({'success': False, 'message': 'Name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not data.get('campaign', None):
+            return Response({'success': False, 'message': 'Campaign is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         PledgeSalawat.objects.create(
+            campaign=data.get('campaign', None),
             amount=data.get('amount', None),
             name=data.get('name', None),
             address=data.get('address', None),
@@ -430,15 +434,12 @@ def get_LifeLesson(request):
 @permission_classes([AllowAny])
 def create_community(request):
     try:
-        name = request.user.full_name if request.user.is_authenticated else 'Guest'
         data = request.data
-
-        if not data.get('description', None):
-            return Response({'success': False, 'message': 'Description is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
+        if not data.get('category_id', None):
+            return Response({'success': False, 'message': 'Category is required.'}, status=status.HTTP_400_BAD_REQUEST)
         
         Community.objects.create(
-            name= name,
+            name= data.get('name', 'Guest'),
             category_id = data.get('category_id', None),
             address=data.get('address', None),
             description=data.get('description', None),

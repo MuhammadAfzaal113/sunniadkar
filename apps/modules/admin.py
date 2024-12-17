@@ -110,3 +110,11 @@ class CommunityCategoryAdmin(admin.ModelAdmin):
     fields = ('category_name',)
     search_fields = ['category_name']
     list_filter = ('category_name', 'created_at')
+    
+
+@admin.register(campaign)
+class campaignAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    fields = ('name',)
+    search_fields = ['name']
+    list_filter = ('name', 'created_at')

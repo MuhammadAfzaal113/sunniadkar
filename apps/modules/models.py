@@ -195,8 +195,18 @@ class  LifeLesson(CommonFields):
         verbose_name = 'Life Lesson'
         verbose_name_plural = 'Life Lessons'
 
+class campaign(CommonFields):
+    name = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Campaign'
+        verbose_name_plural = 'Campaigns'
 
 class PledgeSalawat(CommonFields):
+    campaign = models.ForeignKey(campaign, on_delete=models.CASCADE)
     amount = models.IntegerField()
     name = models.CharField(max_length=255, default='Guest')
     address = models.TextField()
