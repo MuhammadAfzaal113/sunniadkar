@@ -430,7 +430,7 @@ def get_LifeLesson(request):
 @permission_classes([AllowAny])
 def create_community(request):
     try:
-        name = request.user.full_name if request.user else 'Guest'
+        name = request.user.full_name if request.user.is_authenticated else 'Guest'
         data = request.data
 
         if not data.get('description', None):
