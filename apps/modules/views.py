@@ -504,3 +504,17 @@ def ameen_post(request):
         return Response({'success': True, 'message': 'Post Ameen successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_campaign_list(request):
+    try:
+        campaign = Campaign.objects.values('id', 'name').order_by('-created_at')
+        response_data = {
+            'success': True,
+            'message': 'Campaign fetched successfully.',
+            'campaign': campaign
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Campaign because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
