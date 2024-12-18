@@ -112,7 +112,7 @@ class CommunityCategoryAdmin(admin.ModelAdmin):
     list_filter = ('category_name', 'created_at')
     
 
-@admin.register(campaign)
+@admin.register(Campaign)
 class campaignAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at')
     fields = ('name',)
