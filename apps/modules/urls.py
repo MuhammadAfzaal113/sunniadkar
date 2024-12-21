@@ -29,6 +29,7 @@ urlpatterns = [
     path('dua-post', dua_post, name='dua_post'),
     path('ameen-post', ameen_post, name='ameen_post'),
     
-    path('get-campaign', get_campaign_list, name='get_campaign_list'),
+    # path('get-campaign', get_campaign_list, name='get_campaign_list'),
+    path('get-campaign', get_campaigns_with_pledges, name='get_campaigns_with_pledges'),
 
 ]

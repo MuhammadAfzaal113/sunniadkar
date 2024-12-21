@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from psycopg2 import IntegrityError
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -351,7 +352,7 @@ def get_marriage_guide(request):
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
     try:
-        pledge_salawat = PledgeSalawat.objects.values('id', 'amount', 'campaign', 'name', 'address', 'salat').order_by('-created_at')
+        pledge_salawat = PledgeSalawat.objects.values('amount', 'campaign', 'name', 'address', 'salat').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',
@@ -518,3 +519,40 @@ def get_campaign_list(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Campaign because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def get_campaigns_with_pledges(request):
+    try:
+        campaigns = Campaign.objects.all()
+        response_list = []
+
+        for campaign in campaigns:
+            # Fetch all pledges related to this campaign
+            pledges = PledgeSalawat.objects.filter(campaign=campaign).all()
+
+            # Prepare campaign_pledge list
+            campaign_pledge = [
+                {
+                    "name": pledge.name,
+                    "address": pledge.address,
+                    "salat": pledge.salat,
+                    "created_at": pledge.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                    "pledge_count": pledge.pledge_count
+                }
+                for pledge in pledges
+            ]
+
+            # Add campaign data to response
+            response_list.append({
+                "name": campaign.name,
+                "joined": pledges.count(),  # Count of campaign_pledge list
+                "campaign_pledge": campaign_pledge
+            })
+        response_data = {
+            'success': True,
+            'message': 'Campaign fetched successfully.',
+            'campaign': response_list
+        }
+        return JsonResponse(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
