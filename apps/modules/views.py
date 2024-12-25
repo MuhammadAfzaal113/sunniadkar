@@ -436,12 +436,9 @@ def get_LifeLesson(request):
 def create_community(request):
     try:
         data = request.data
-        if not data.get('category_id', None):
-            return Response({'success': False, 'message': 'Category is required.'}, status=status.HTTP_400_BAD_REQUEST)
         
         Community.objects.create(
             name= data.get('name', 'Guest'),
-            category_id = data.get('category_id', None),
             address=data.get('address', None),
             description=data.get('description', None),
         )

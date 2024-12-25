@@ -9,7 +9,6 @@ from apps.user.models import User
 class Salawat(CommonFields):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    # created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.title
