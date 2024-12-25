@@ -352,7 +352,10 @@ def get_marriage_guide(request):
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
     try:
-        pledge_salawat = PledgeSalawat.objects.values('campaign', 'name', 'address', 'salat').order_by('-created_at')
+        if request.query_params.get('campaign', None):
+            pledge_salawat = PledgeSalawat.objects.filter(campaign=request.query_params.get('campaign', None)).values('campaign', 'name', 'address', 'salat').order_by('-created_at')
+        else:
+            pledge_salawat = PledgeSalawat.objects.values('campaign', 'name', 'address', 'salat').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',
