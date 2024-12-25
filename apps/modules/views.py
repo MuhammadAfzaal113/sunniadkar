@@ -519,40 +519,32 @@ def get_campaign_list(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Campaign because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-def get_campaigns_with_pledges(request):
+    
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_mentality_booster(request):
     try:
-        campaigns = Campaign.objects.all()
-        response_list = []
-
-        for campaign in campaigns:
-            # Fetch all pledges related to this campaign
-            pledges = PledgeSalawat.objects.filter(campaign=campaign).all()
-
-            # Prepare campaign_pledge list
-            campaign_pledge = [
-                {
-                    "name": pledge.name,
-                    "address": pledge.address,
-                    "salat": pledge.salat,
-                    "created_at": pledge.created_at.strftime('%Y-%m-%d %H:%M:%S'),
-                    "pledge_count": pledge.pledge_count
-                }
-                for pledge in pledges
-            ]
-
-            # Add campaign data to response
-            response_list.append({
-                "name": campaign.name,
-                "joined": pledges.count(),  # Count of campaign_pledge list
-                "campaign_pledge": campaign_pledge
-            })
+        mentality_booster = MentalityBooster.objects.values('id', 'title', 'description').order_by('-created_at')
         response_data = {
             'success': True,
-            'message': 'Campaign fetched successfully.',
-            'campaign': response_list
+            'message': 'Mentality Booster fetched successfully.',
+            'mentality_booster': mentality_booster
         }
-        return JsonResponse(response_data, status=status.HTTP_200_OK)
+        return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'success': False, 'message': f"Failed to fetch Mentality Booster because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_health_tips(request):
+    try:
+        health_tips = HealthTips.objects.values('id', 'title', 'description').order_by('-created_at')
+        response_data = {
+            'success': True,
+            'message': 'Health Tips fetched successfully.',
+            'health_tips': health_tips
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Health Tips because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
