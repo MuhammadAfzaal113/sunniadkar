@@ -114,10 +114,10 @@ class CommunityCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Community)
 class CommunityAdmin(admin.ModelAdmin):
-    list_display = ('name', 'address', 'description', 'category', 'like', 'dua', 'ameen')
-    fields = ('name', 'address', 'description', 'category',)
-    search_fields = ['name', 'category']
-    list_filter = ('name', 'category')
+    list_display = ('name', 'address', 'description', 'like', 'dua', 'ameen')
+    fields = ('name', 'address', 'description')
+    search_fields = ['name',]
+    list_filter = ('name',)
 
 
 @admin.register(PledgeSalawat)
