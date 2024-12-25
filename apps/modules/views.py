@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from psycopg2 import IntegrityError
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -351,7 +352,7 @@ def get_marriage_guide(request):
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
     try:
-        pledge_salawat = PledgeSalawat.objects.values('id', 'amount', 'campaign', 'name', 'address', 'salat').order_by('-created_at')
+        pledge_salawat = PledgeSalawat.objects.values('amount', 'campaign', 'name', 'address', 'salat').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',

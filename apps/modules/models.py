@@ -207,10 +207,11 @@ class Campaign(CommonFields):
 
 class PledgeSalawat(CommonFields):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    amount = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=255, default='Guest')
     address = models.TextField()
     salat = models.CharField(max_length=255, choices=SalatChoices.choices, null=True, blank=True)
+    pledge_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.salat

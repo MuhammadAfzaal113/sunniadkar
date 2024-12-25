@@ -110,7 +110,23 @@ class CommunityCategoryAdmin(admin.ModelAdmin):
     fields = ('category_name',)
     search_fields = ['category_name']
     list_filter = ('category_name', 'created_at')
-    
+
+
+@admin.register(Community)
+class CommunityAdmin(admin.ModelAdmin):
+    list_display = ('name', 'address', 'description', 'category', 'like', 'dua', 'ameen')
+    fields = ('name', 'address', 'description', 'category',)
+    search_fields = ['name', 'category']
+    list_filter = ('name', 'category')
+
+
+@admin.register(PledgeSalawat)
+class PledgeSalawatAdmin(admin.ModelAdmin):
+    list_display = ('campaign', 'created_at', 'name', 'address', 'salat', 'pledge_count')
+    fields = ('campaign', 'name', 'address', 'salat', 'pledge_count',)
+    search_fields = ['name', 'campaign']
+    list_filter = ('name', 'campaign')
+
 
 @admin.register(Campaign)
 class campaignAdmin(admin.ModelAdmin):
