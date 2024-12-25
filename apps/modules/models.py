@@ -236,7 +236,6 @@ class Community(CommonFields):
     name = models.CharField(max_length=255)
     address = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey(CommunityCategory, on_delete=models.SET_NULL, null=True, blank=True)
 
     like = models.IntegerField(default=0)
     dua = models.IntegerField(default=0)
@@ -244,3 +243,18 @@ class Community(CommonFields):
     
     def __str__(self):
         return self.name
+    
+class MentalityBooster(CommonFields):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.title
+    
+class HealthTips(CommonFields):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.title
+    

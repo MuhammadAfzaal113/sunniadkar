@@ -30,5 +30,8 @@ urlpatterns = [
     path('ameen-post', ameen_post, name='ameen_post'),
     
     path('get-campaign', get_campaign_list, name='get_campaign_list'),
+    path('get-mentality-booster', get_mentality_booster, name='get_mentality_booster'),
+    path('get-health-tips', get_health_tips, name='get_health_tips'),
+    
 
 ]

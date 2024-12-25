@@ -518,3 +518,32 @@ def get_campaign_list(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Campaign because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_mentality_booster(request):
+    try:
+        mentality_booster = MentalityBooster.objects.values('id', 'title', 'description').order_by('-created_at')
+        response_data = {
+            'success': True,
+            'message': 'Mentality Booster fetched successfully.',
+            'mentality_booster': mentality_booster
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Mentality Booster because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_health_tips(request):
+    try:
+        health_tips = HealthTips.objects.values('id', 'title', 'description').order_by('-created_at')
+        response_data = {
+            'success': True,
+            'message': 'Health Tips fetched successfully.',
+            'health_tips': health_tips
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Health Tips because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
