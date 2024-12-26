@@ -352,7 +352,7 @@ def get_marriage_guide(request):
 @permission_classes([AllowAny])
 def get_pledge_salawat(request):
     try:
-        pledge_salawat = PledgeSalawat.objects.values('amount', 'campaign', 'name', 'address', 'salat').order_by('-created_at')
+        pledge_salawat = PledgeSalawat.objects.values('amount', 'campaign', 'name', 'address', 'salat', 'pledge_count').order_by('-created_at')
         response_data = {
             'success': True,
             'message': 'Pledge Salawat fetched successfully.',
