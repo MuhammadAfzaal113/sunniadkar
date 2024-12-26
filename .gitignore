@@ -8,4 +8,4 @@
 /apps/user/__pycache__/*
 /apps/modules/migrations/__pycache__/*
 /apps/modules/__pycache__/*
-
+/venv/
