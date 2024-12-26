@@ -377,10 +377,12 @@ def create_pledge_salawat(request):
         
         if not data.get('campaign', None):
             return Response({'success': False, 'message': 'Campaign is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
+        campaign_obj = Campaign.objects.filter(id=data.get('campaign', None)).first()
+        if not campaign_obj:
+            return Response({'success': False, 'message': 'Campaign not found.'}, status=status.HTTP_400_BAD_REQUEST)
         PledgeSalawat.objects.create(
-            campaign=data.get('campaign', None),
-            amount=data.get('amount', None),
+            campaign=campaign_obj,
+            pledge_count=data.get('amount', None),
             name=data.get('name', None),
             address=data.get('address', None),
             salat=data.get('salat', None),
