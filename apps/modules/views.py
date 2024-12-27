@@ -10,33 +10,6 @@ from apps.modules.models import *
 from itertools import groupby
 from operator import itemgetter
 
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def create_salawat_view(request):
-    try:
-        if not request.data.get('salawat_title') or not request.data.get('salawat_text'):
-            return Response({'success': False, 'message': 'Salawat title and description are required.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        salwat_object = Salawat.objects.create(
-            salawat_title=request.data.get('salawat_title'),
-            salawat_text=request.data.get('salawat_text'),
-        )
-        response_data = {
-            'success': True,
-            'message': 'Salawat created successfully.',
-            'id': str(salwat_object.id),
-            'salawat_title': salwat_object.salawat_title,
-            'salawat_text': salwat_object.salawat_text
-        }
-        return Response(response_data, status=status.HTTP_201_CREATED)
-    except IntegrityError as e:
-        return Response({'success': False, 'message': 'Salawat already exists.'}, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_salawat_view(request):
@@ -585,8 +558,8 @@ def update_salawat(request):
         if not salawat:
             return Response({'success': False, 'message': 'Salawat not found.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        salawat.title = data.get('title')
-        salawat.description = data.get('description')
+        salawat.title = data.get('title', salawat.title)
+        salawat.description = data.get('description', salawat.description)
         salawat.save()
         return Response({'success': True, 'message': 'Salawat updated successfully.'}, status=status.HTTP_200_OK)
     except Salawat.DoesNotExist:
@@ -646,7 +619,7 @@ def update_dua_category(request):
         if not dua_category:
             return Response({'success': False, 'message': 'Dua category not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        dua_category.category_name = data.get('category_name')
+        dua_category.category_name = data.get('category_name', dua_category.category_name)
         dua_category.save()
         return Response({'success': True, 'message': 'Dua category updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -655,7 +628,7 @@ def update_dua_category(request):
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
-def delete_dua_category(request, id):
+def delete_dua_category(request):
     try:
         id = request.data.get('id')
         if not id:
@@ -720,8 +693,8 @@ def update_dua(request):
             if not category:
                 return Response({'success': False, 'message': 'Category not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        dua.title = data.get('title')
-        dua.description = data.get('description')
+        dua.title = data.get('title', dua.title)
+        dua.description = data.get('description', dua.description)
         dua.category = category
         dua.save()
         return Response({'success': True, 'message': 'Dua updated successfully.'}, status=status.HTTP_200_OK)
@@ -781,9 +754,9 @@ def update_book(request):
         if not book:
             return Response({'success': False, 'message': 'Book not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        book.title = data.get('title')
-        book.description = data.get('description')
-        book.link = data.get('link')
+        book.title = data.get('title', book.title)
+        book.description = data.get('description', book.description)
+        book.link = data.get('link', book.link)
         book.save()
         return Response({'success': True, 'message': 'Book updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -841,8 +814,8 @@ def update_mewlid(request):
         if not mewlid:
             return Response({'success': False, 'message': 'Mewlid not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        mewlid.title = data.get('title')
-        mewlid.description = data.get('description')
+        mewlid.title = data.get('title', mewlid.title)
+        mewlid.description = data.get('description', mewlid.description)
         mewlid.save()
         return Response({'success': True, 'message': 'Mewlid updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -876,8 +849,8 @@ def create_qasida(request):
             return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         qasida = Qasida.objects.create(
-            title=data.get('title'),
-            description=data.get('description')
+            title=data.get('title', None),
+            description=data.get('description', None)
         )
         return Response({'success': True, 'message': 'Qasida created successfully.', 'qasida': qasida.id}, status=status.HTTP_201_CREATED)
     except Exception as e:
@@ -900,8 +873,8 @@ def update_qasida(request):
         if not qasida:
             return Response({'success': False, 'message': 'Qasida not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        qasida.title = data.get('title')
-        qasida.description = data.get('description')
+        qasida.title = data.get('title', qasida.title)
+        qasida.description = data.get('description', qasida.description)
         qasida.save()
         return Response({'success': True, 'message': 'Qasida updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -959,8 +932,8 @@ def update_lecture(request):
         if not lecture:
             return Response({'success': False, 'message': 'Lecture not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        lecture.title = data.get('title')
-        lecture.link = data.get('link')
+        lecture.title = data.get('title', lecture.title)
+        lecture.link = data.get('link', lecture.link)
         lecture.save()
         return Response({'success': True, 'message': 'Lecture updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1018,9 +991,9 @@ def update_article(request):
         if not article:
             return Response({'success': False, 'message': 'Article not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        article.title = data.get('title')
-        article.description = data.get('description')
-        article.link = data.get('link')
+        article.title = data.get('title', article.title)
+        article.description = data.get('description', article.description)
+        article.link = data.get('link', article.link)
         article.save()
         return Response({'success': True, 'message': 'Article updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1077,8 +1050,8 @@ def update_qa(request):
         if not qa:
             return Response({'success': False, 'message': 'QA not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        qa.question = data.get('question')
-        qa.answer = data.get('answer')
+        qa.question = data.get('question', qa.question)
+        qa.answer = data.get('answer', qa.answer)
         qa.save()
         return Response({'success': True, 'message': 'QA updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1135,8 +1108,8 @@ def update_download(request):
         if not download:
             return Response({'success': False, 'message': 'Download not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        download.title = data.get('title')
-        download.link = data.get('link')
+        download.title = data.get('title', download.title)
+        download.link = data.get('link', download.link)
         download.save()
         return Response({'success': True, 'message': 'Download updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1195,9 +1168,9 @@ def update_marriage_guide(request):
         if not marriage_guide:
             return Response({'success': False, 'message': 'Marriage guide not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        marriage_guide.title = data.get('title')
-        marriage_guide.description = data.get('description')
-        marriage_guide.link = data.get('link')
+        marriage_guide.title = data.get('title', marriage_guide.title)
+        marriage_guide.description = data.get('description', marriage_guide.description)
+        marriage_guide.link = data.get('link', marriage_guide.link)
         marriage_guide.save()
         return Response({'success': True, 'message': 'Marriage guide updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1254,8 +1227,8 @@ def update_life_lesson(request):
         if not life_lesson:
             return Response({'success': False, 'message': 'Life lesson not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        life_lesson.author_id = data.get('author')
-        life_lesson.description = data.get('description')
+        life_lesson.author_id = data.get('author', life_lesson.author_id)
+        life_lesson.description = data.get('description', life_lesson.description)
         life_lesson.save()
         return Response({'success': True, 'message': 'Life lesson updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1311,7 +1284,7 @@ def update_campaign(request):
         if not campaign:
             return Response({'success': False, 'message': 'Campaign not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        campaign.name = data.get('name')
+        campaign.name = data.get('name', campaign.name)
         campaign.save()
         return Response({'success': True, 'message': 'Campaign updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1367,7 +1340,7 @@ def update_community_category(request):
         if not community_category:
             return Response({'success': False, 'message': 'Community category not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        community_category.category_name = data.get('category_name')
+        community_category.category_name = data.get('category_name', community_category.category_name)
         community_category.save()
         return Response({'success': True, 'message': 'Community category updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1424,8 +1397,8 @@ def update_mentality_booster(request):
         if not mentality_booster:
             return Response({'success': False, 'message': 'Mentality booster not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        mentality_booster.title = data.get('title')
-        mentality_booster.description = data.get('description')
+        mentality_booster.title = data.get('title', mentality_booster.title)
+        mentality_booster.description = data.get('description', mentality_booster.description)
         mentality_booster.save()
         return Response({'success': True, 'message': 'Mentality booster updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -1482,8 +1455,8 @@ def update_health_tips(request):
         if not health_tips:
             return Response({'success': False, 'message': 'Health tips not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        health_tips.title = data.get('title')
-        health_tips.description = data.get('description')
+        health_tips.title = data.get('title', health_tips.title)
+        health_tips.description = data.get('description', health_tips.description)
         health_tips.save()
         return Response({'success': True, 'message': 'Health tips updated successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
