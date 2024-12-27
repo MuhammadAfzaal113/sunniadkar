@@ -1199,11 +1199,11 @@ def delete_marriage_guide(request):
 def create_life_lesson(request):
     try:
         data = request.data
-        if not data.get('author') or not data.get('description'):
+        if not data.get('description'):
             return Response({'success': False, 'message': 'Author and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         life_lesson = LifeLesson.objects.create(
-            author_id=data.get('author'),
+            author=request.user,
             description=data.get('description')
         )
         return Response({'success': True, 'message': 'Life lesson created successfully.', 'life_lesson': life_lesson.id}, status=status.HTTP_201_CREATED)
@@ -1219,9 +1219,6 @@ def update_life_lesson(request):
         id = data.get('id')
         if not id:
             return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if not data.get('author') or not data.get('description'):
-            return Response({'success': False, 'message': 'Author and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         life_lesson = LifeLesson.objects.filter(id=id).first()
         if not life_lesson:
