@@ -14,56 +14,23 @@ from operator import itemgetter
 @permission_classes([AllowAny])
 def get_salawat_view(request):
     try:
-        salawat = Salawat.objects.values('id', 'title', 'description').order_by('-created_at')
-        response_data = {
-            'success': True,
-            'message': 'Salawat fetched successfully.',
-            'salawat': salawat
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def get_salawat_by_id_view(request, id):
-    try:
-        salawat = Salawat.objects.filter(id=id).values('id', 'title', 'description').first()
-        response_data = {
-            'success': True,
-            'message': 'Salawat fetched successfully.',
-            'salawat': salawat
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def delete_salawat_view(request, id):
-    try:
-        salawat = Salawat.objects.get(id=id)
-        salawat.delete()
-        return Response({'success': True, 'message': 'Salawat deleted successfully.'}, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def update_salawat_view(request, id):
-    try:
-        if not request.data.get('salawat_title') or not request.data.get('salawat_text'):
-            return Response({'success': False, 'message': 'Salawat title and description are required.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        salawat = Salawat.objects.get(id=id)
-        salawat.salawat_title = request.data.get('salawat_title')
-        salawat.salawat_text = request.data.get('salawat_text')
-        salawat.save()
-        return Response({'success': True, 'message': 'Salawat updated successfully.'}, status=status.HTTP_200_OK)
+        id = request.query_params.get('id', None)
+        if id:
+            salawat = Salawat.objects.filter(id=id).values('id', 'title', 'description').first()
+            response_data = {
+                'success': True,
+                'message': 'Salawat fetched successfully.',
+                'salawat': salawat
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            salawat = Salawat.objects.values('id', 'title', 'description').order_by('-created_at')
+            response_data = {
+                'success': True,
+                'message': 'Salawat fetched successfully.',
+                'salawat': salawat
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -87,79 +54,23 @@ def get_random_salawat_view(request):
 @permission_classes([AllowAny])
 def get_dua_category_view(request):
     try:
-        dua_category = DuaCategory.objects.values('id', 'category_name').order_by('-created_at')
-        response_data = {
-            'success': True,
-            'message': 'Dua category fetched successfully.',
-            'dua_category': dua_category
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def get_dua_category_by_id_view(request, id):
-    try:
-        dua_category = DuaCategory.objects.filter(id=id).values('id', 'category_name').first()
-        response_data = {
-            'success': True,
-            'message': 'Dua category fetched successfully.',
-            'dua_category': dua_category
-        }
-        return Response(response_data, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def create_dua_category_view(request):
-    try:
-        if not request.data.get('dua_category_name'):
-            return Response({'success': False, 'message': 'Dua category name is required.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        dua_category_object = DuaCategory.objects.create(
-            dua_category_name=request.data.get('dua_category_name'),
-        )
-        response_data = {
-            'success': True,
-            'message': 'Dua category created successfully.',
-            'id': str(dua_category_object.id),
-            'dua_category_name': dua_category_object.dua_category_name,
-        }
-        return Response(response_data, status=status.HTTP_201_CREATED)
-    except IntegrityError as e:
-        return Response({'success': False, 'message': 'Dua category already exists.'}, status=status.HTTP_400_BAD_REQUEST)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def delete_dua_category_view(request, id):
-    try:
-        dua_category = DuaCategory.objects.get(id=id)
-        dua_category.delete()
-        return Response({'success': True, 'message': 'Dua category deleted successfully.'}, status=status.HTTP_200_OK)
-    except Exception as e:
-        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['PUT'])
-@permission_classes([IsAdminUser])
-def update_dua_category_view(request, id):
-    try:
-        if not request.data.get('dua_category_name'):
-            return Response({'success': False, 'message': 'Dua category name is required.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        dua_category = DuaCategory.objects.get(id=id)
-        dua_category.dua_category_name = request.data.get('dua_category_name')
-        dua_category.save()
-        return Response({'success': True, 'message': 'Dua category updated successfully.'}, status=status.HTTP_200_OK)
+        id = request.query_params.get('id', None)
+        if id:
+            dua_category = DuaCategory.objects.filter(id=id).values('id', 'category_name').first()
+            response_data = {
+                'success': True,
+                'message': 'Dua category fetched successfully.',
+                'dua_category': dua_category
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            dua_category = DuaCategory.objects.values('id', 'category_name').order_by('-created_at')
+            response_data = {
+                'success': True,
+                'message': 'Dua category fetched successfully.',
+                'dua_category': dua_category
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -579,11 +490,8 @@ def update_salawat(request):
         id = data.get('id')
         if not id:
             return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        if not data.get('title') or not data.get('description'):
-            return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        salawat = Salawat.objects.first(id=id).first()
+        salawat = Salawat.objects.filter(id=id).first()
         if not salawat:
             return Response({'success': False, 'message': 'Salawat not found.'}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -599,7 +507,7 @@ def update_salawat(request):
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
-def delete_salawat(request, id):
+def delete_salawat(request):
     try:
         id = request.data.get('id')
         if not id:
@@ -682,11 +590,12 @@ def create_dua(request):
             return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         category_id = data.get('category')
-        category = None
-        if category_id:
-            category = DuaCategory.objects.filter(id=category_id).first()
-            if not category:
-                return Response({'success': False, 'message': 'Category not found.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not category_id:
+            return Response({'success': False, 'message': 'Category is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        category = DuaCategory.objects.filter(id=category_id).first()
+        if not category:
+            return Response({'success': False, 'message': 'Category not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
         dua = Dua.objects.create(
             title=data.get('title'),
