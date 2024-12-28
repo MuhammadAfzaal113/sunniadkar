@@ -258,3 +258,17 @@ class HealthTips(CommonFields):
     def __str__(self):
         return self.title
     
+class Pathway(CommonFields):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.title
+    
+class SisterSection(CommonFields):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.title
+    
