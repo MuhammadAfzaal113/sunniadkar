@@ -521,6 +521,35 @@ def get_health_tips(request):
         return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': f"Failed to fetch Health Tips because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_pathway(request):
+    try:
+        pathway = Pathway.objects.values('id', 'title', 'description').order_by('title')
+        response_data = {
+            'success': True,
+            'message': 'Pathway fetched successfully.',
+            'pathway': pathway
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Pathway because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_sister_section(request):
+    try:
+        sister_section = SisterSection.objects.values('id', 'title', 'description').order_by('title')
+        response_data = {
+            'success': True,
+            'message': 'Sister Section fetched successfully.',
+            'sister_section': sister_section
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': f"Failed to fetch Sister Section because : {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 #------------------------------------------ ADMIN API ---------------------------------------------------------
     
@@ -1474,5 +1503,117 @@ def delete_health_tips(request):
         
         health_tips.delete()
         return Response({'success': True, 'message': 'Health tips deleted successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def create_pathway(request):
+    try:
+        data = request.data
+        if not data.get('title') or not data.get('description'):
+            return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        pathway = Pathway.objects.create(
+            title=data.get('title'),
+            description=data.get('description')
+        )
+        return Response({'success': True, 'message': 'Pathway created successfully.', 'pathway': pathway.id}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_pathway(request):
+    try:
+        data = request.data
+        id = data.get('id')
+        if not id:
+            return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not data.get('title') or not data.get('description'):
+            return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        pathway = Pathway.objects.filter(id=id).first()
+        if not pathway:
+            return Response({'success': False, 'message': 'Pathway not found.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        pathway.title = data.get('title', pathway.title)
+        pathway.description = data.get('description', pathway.description)
+        pathway.save()
+        return Response({'success': True, 'message': 'Pathway updated successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def delete_pathway(request):
+    try:
+        id = request.data.get('id')
+        if not id:
+            return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        pathway = Pathway.objects.filter(id=id).first()
+        if not pathway:
+            return Response({'success': False, 'message': 'Pathway not found.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        pathway.delete()
+        return Response({'success': True, 'message': 'Pathway deleted successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+@permission_classes([IsAdminUser])
+def create_sister_section(request):
+    try:
+        data = request.data
+        if not data.get('title') or not data.get('description'):
+            return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        sister_section = SisterSection.objects.create(
+            title=data.get('title'),
+            description=data.get('description')
+        )
+        return Response({'success': True, 'message': 'Sister section created successfully.', 'sister_section': sister_section.id}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def update_sister_section(request):
+    try:
+        data = request.data
+        id = data.get('id')
+        if not id:
+            return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not data.get('title') or not data.get('description'):
+            return Response({'success': False, 'message': 'Title and description are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        sister_section = SisterSection.objects.filter(id=id).first()
+        if not sister_section:
+            return Response({'success': False, 'message': 'Sister section not found.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        sister_section.title = data.get('title', sister_section.title)
+        sister_section.description = data.get('description', sister_section.description)
+        sister_section.save()
+        return Response({'success': True, 'message': 'Sister section updated successfully.'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def delete_sister_section(request):
+    try:
+        id = request.data.get('id')
+        if not id:
+            return Response({'success': False, 'message': 'ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        sister_section = SisterSection.objects.filter(id=id).first()
+        if not sister_section:
+            return Response({'success': False, 'message': 'Sister section not found.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        sister_section.delete()
+        return Response({'success': True, 'message': 'Sister section deleted successfully.'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'success': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)

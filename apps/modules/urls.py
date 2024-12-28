@@ -32,6 +32,8 @@ urlpatterns = [
     path('get-campaign', get_campaign_list, name='get_campaign_list'),
     path('get-mentality-booster', get_mentality_booster, name='get_mentality_booster'),
     path('get-health-tips', get_health_tips, name='get_health_tips'),
+    path('get-pathway', get_pathway, name='get_pathway'),
+    path('get-sister', get_sister_section, name='get_sister'),
     
 
 # -------------------- Admin Panel --------------------
@@ -114,5 +116,15 @@ urlpatterns = [
     path('healthtips/create', create_health_tips, name='create_health_tips'),
     path('healthtips/update', update_health_tips, name='update_health_tips'),
     path('healthtips/delete', delete_health_tips, name='delete_health_tips'),
+    
+    # Pathway URLs
+    path('pathway/create', create_pathway, name='create_pathway'),
+    path('pathway/update', update_pathway, name='update_pathway'),
+    path('pathway/delete', delete_pathway, name='delete_pathway'),
+    
+    # Sister URLs
+    path('sister/create', create_sister_section, name='create_sister_section'),
+    path('sister/update', update_sister_section, name='update_sister_section'),
+    path('sister/delete', delete_sister_section, name='delete_sister_section'),
     
 ]
