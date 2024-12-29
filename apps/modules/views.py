@@ -395,6 +395,8 @@ def ameen_post(request):
 def get_campaign_list(request):
     try:
         campaign = Campaign.objects.values('id', 'name').order_by('-created_at')
+        for camp in campaign:
+            camp['pledge_user_count'] = PledgeSalawat.objects.filter(campaign=camp['id']).count()
         response_data = {
             'success': True,
             'message': 'Campaign fetched successfully.',
