@@ -79,9 +79,13 @@ def get_dua_category_view(request):
 @permission_classes([AllowAny])
 def get_dua_view_by_category_view(request):
     try:
-        dua_objects = Dua.objects.filter(category=request.query_params.get('dua_category_id')).values()
+        if request.query_params.get('dua_category_id'):
+            dua_objects = Dua.objects.filter(category=request.query_params.get('dua_category_id')).values()
+        else:
+            dua_objects = Dua.objects.values()
 
         # Group by category_id
+        dua_objects = [obj for obj in dua_objects if obj['category_id'] is not None]
         dua_objects = sorted(dua_objects, key=itemgetter('category_id'))  # Sort before grouping
         grouped = groupby(dua_objects, key=itemgetter('category_id'))
 
